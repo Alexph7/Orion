@@ -1,0 +1,22 @@
+{
+  "A": {
+    "name": "CUPOM AMAZON APP",
+    "link": "https://amzn.to/3KOq5mb",
+    "prime": "https://amzn.to/4eyqaog"
+  },
+  "M": {
+    "name": "CUPOM MERCADO LIVRE",
+    "link": "https://mercadolivre.com/sec/2t4RPGR"
+  },
+  "MA": {
+    "name": "🔵 CUPOM MAGALU",
+    "link": "https://magazineluiza.onelink.me/589508454/q6auisyr"
+  },
+  "S": {
+    "name": "⭕ CUPOM SHOPEE",
+    "link": {
+      "wallet": "http://s.shopee.com.br/4AjysYzAST",
+      "cart": "http://s.shopee.com.br/2qEbLTUDQ5"
+    }
+  }
+}
