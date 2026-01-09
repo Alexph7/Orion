@@ -2,15 +2,18 @@
   "A": {
     "name": "CUPOM AMAZON APP",
     "link": "https://amzn.to/3KOq5mb",
-    "prime": "https://amzn.to/4eyqaog"
+    "prime": "https://amzn.to/4eyqaog",
+    "image": "./imagens/amazon.jpg"
   },
   "M": {
     "name": "CUPOM MERCADO LIVRE",
-    "link": "https://mercadolivre.com/sec/2t4RPGR"
+    "link": "https://mercadolivre.com/sec/2t4RPGR",
+    "image": "./imagens/mercadolivre.jpg"
   },
   "MA": {
     "name": "🔵 CUPOM MAGALU",
-    "link": "https://magazineluiza.onelink.me/589508454/q6auisyr"
+    "link": "https://magazineluiza.onelink.me/589508454/q6auisyr",
+    "image": "./imagens/magalu.jpg"
   },
   "S": {
     "name": "⭕ CUPOM SHOPEE",

@@ -1,6 +1,5 @@
 import { Telegraf } from 'telegraf';
 import dotenv from 'dotenv';
-import fetch from 'node-fetch';
 import fs from 'fs';
 
 dotenv.config();
@@ -40,18 +39,18 @@ function saveStores() {
 ========================= */
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
-const TG_API = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`;
-
-async function sendTelegramMessage(chatId, text) {
-    await fetch(TG_API, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            chat_id: chatId,
-            text,
+async function sendTelegramPost(chatId, imagePath, text) {
+    if (imagePath && fs.existsSync(imagePath)) {
+        await bot.telegram.sendPhoto(
+            chatId,
+            { source: imagePath },
+            { caption: text, parse_mode: 'HTML' }
+        );
+    } else {
+        await bot.telegram.sendMessage(chatId, text, {
             parse_mode: 'HTML'
-        })
-    });
+        });
+    }
 }
 
 /* =========================
@@ -128,19 +127,22 @@ function processPostInput(input) {
             `🔗 Carrinho: ${store.link.cart}`;
     } else if (storeKey === 'A') {
         linkBlock =
-            `🔗 Resgate Aqui: ${store.link}\n\n` +
+            `🔗Ative no link p ajudar o canal: ${store.link}\n\n` +
             `⭐️Assine o Prime, grátis por 30 dias:\n${store.prime}`;
     } else if (storeKey === 'M') {
-        linkBlock = `🔗 Desconto link: ${store.link}`;
+        linkBlock = `🔗Ative no link p ajudar o canal: ${store.link}`;
     } else if (storeKey === 'MA') {
-        linkBlock = `🔗 Resgate Aqui: ${store.link}`;
+        linkBlock = `🔗Ative no link p ajudar o canal: ${store.link}`;
     }
 
-    return (
-        `${store.name}\n\n` +
-        `✅ ${discountText} 🔑 <code>${code}</code>\n` +
-        `${linkBlock}`
-    );
+    return {
+        text:
+            `${store.name}\n\n` +
+            `✅ ${discountText} 🔑 <code>${code}</code>\n` +
+            `${linkBlock}`,
+        image: store.image
+    };
+
 }
 
 /* =========================
@@ -206,11 +208,20 @@ bot.on('text', async (ctx) => {
 
     waitingPostInput.delete(userId);
 
-    const message = processPostInput(text);
-    if (message.startsWith('❌')) return ctx.reply(message);
+    const result = processPostInput(text);
 
-    await sendTelegramMessage(process.env.TG_CHANNEL_ID, message);
+    if (typeof result === 'string' && result.startsWith('❌')) {
+        return ctx.reply(result);
+    }
+
+    await sendTelegramPost(
+        process.env.TG_CHANNEL_ID,
+        result.image,
+        result.text
+    );
+
     ctx.reply('Post enviado.');
+
 });
 
 /* =========================
